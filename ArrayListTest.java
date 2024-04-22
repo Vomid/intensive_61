@@ -31,9 +31,9 @@ public class ArrayListTest {
             list.clear();
 
             // Проверка пустоты списка
-            if(list.toString().isEmpty()){
+            if (list.size() == 0) {
                 System.out.println("Лист пуст");
-            }else{
+            } else {
                 System.out.println("Лист не пуст");
             }
         }
