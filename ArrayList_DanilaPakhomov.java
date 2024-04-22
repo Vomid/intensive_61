@@ -80,7 +80,7 @@ public class ArrayList_DanilaPakhomov<E> implements IntensiveList<E> {
      * */
     @Override
     public void quickSort(Comparator<E> comparator) {
-        Collections.sort(list, comparator);
+        list.sort(comparator);
     }
 
     /**
