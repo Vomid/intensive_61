@@ -1,23 +1,10 @@
-import java.util.*
-
-public interface IntensiveList<E> {
-    int size();
-    void add(E element);
-    void add(int index, E element);
-    E get(int index);
-    E set(int index, E element);
-    E remove(int index);
-    void clear();
-    void quickSort(Comparator<E> comparator);
-    boolean isSorted();
-    void split(int size);
-}
+import java.util.*;
 
 /**
  * Класс имплементирует интерфейс IntensiveList и предоставляет необходимый функционал
  * @param <E> Тип элементов списка
  * */
-public class ArrayList_DanilaPakhomov implements IntensiveList<E> {
+public class ArrayList_DanilaPakhomov<E> implements IntensiveList<E> {
     private List<E> list = new ArrayList<>();
 
     /**
@@ -92,7 +79,7 @@ public class ArrayList_DanilaPakhomov implements IntensiveList<E> {
      * @param comparator Компаратор для сравнения элеменов списка
      * */
     @Override
-    public void quickSort(Comparator<E> comparator){
+    public void quickSort(Comparator<E> comparator) {
         Collections.sort(list, comparator);
     }
 
@@ -102,7 +89,36 @@ public class ArrayList_DanilaPakhomov implements IntensiveList<E> {
      * */
     @Override
     public boolean isSorted() {
-        return list.isEmpty() || Collections.binarySearch(list, list.get(0)) >= 0 && Collections.binarySeacrh(list, list.get(list.size() - 1)) >= 0;
+        return list.isEmpty() || binarySearchForward(list, list.get(0)) >= 0 && binarySearchForward(list, list.get(list.size() - 1)) >= 0;
+    }
+
+    /**
+     * Выполняет бинарный поиск вперед в списке.
+     *
+     * @param list Список для поиска
+     * @param key Ключ, который нужно найти
+     * @return Индекс первого вхождения ключа в списке, если ключ найден. Если ключ не найден, то возвращает отрицательное число,
+     *         которое является индексом, где ключ должен быть вставлен, чтобы сохранить порядок списка.
+     */
+    private int binarySearchForward(List<E> list, E key) {
+        int low = 0;
+        int high = list.size() - 1;
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            int cmp = compare(key, list.get(mid));
+            if (cmp < 0) {
+                high = mid - 1;
+            } else if (cmp > 0) {
+                low = mid + 1;
+            } else {
+                return mid; // ключ найден
+            }
+        }
+        return -(low + 1); // ключ не найден
+    }
+
+    private int compare(E o1, E o2) {
+        return ((Comparable<? super E>) o1).compareTo(o2);
     }
 
     /**
